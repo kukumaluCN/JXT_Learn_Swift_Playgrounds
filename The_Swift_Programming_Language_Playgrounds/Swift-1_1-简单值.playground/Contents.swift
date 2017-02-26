@@ -64,17 +64,3 @@ occupations = [:]
 occupations
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
