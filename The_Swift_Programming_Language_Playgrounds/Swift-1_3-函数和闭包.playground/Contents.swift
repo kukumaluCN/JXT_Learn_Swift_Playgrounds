@@ -121,12 +121,17 @@ hasAnyMatches(list: numbers, condition: lessThanTen)
 
 
 
-//函数实际上是一种特殊的闭包:它是一段能之后被调取的代码。闭包中的代码能访问闭包所建作用域中能得到的变 量和函数，即使闭包是在一个不同的作用域被执行的 - 你已经在嵌套函数例子中所看到。你可以使用 {} 来创建 一个匿名闭包。使用 in 将参数和返回值类型声明与闭包函数体进行分离。
+
+//函数实际上是一种特殊的闭包:它是一段能之后被调取的代码。闭包中的代码能访问闭包所建作用域中能得到的变 量和函数，即使闭包是在一个不同的作用域被执行的 - 你已经在嵌套函数例子中所看到。
+//你可以使用 {} 来创建 一个匿名闭包。
+//使用 in 将参数和返回值类型声明与闭包函数体进行分离。
 numbers.map({
-    (number: Int) -> Int in
+    (number: Int) -> Int
+    in
     let result = 3 * number
     return result
 })
+//numbers.map(<#T##transform: (Int) throws -> T##(Int) throws -> T#>)
 
 
 
@@ -137,10 +142,29 @@ print(mappedNumbers)
 
 
 //你可以通过参数位置而不是参数名字来引用参数——这个方法在非常短的闭包中非常有用。当一个闭包作为最后一个参数传给一个函数的时候，它可以直接跟在括号后面。当一个闭包是传给函数的唯一参数，你可以完全忽略括号。
+//写法一：
 let sortedNumbers = numbers.sorted{ $0 > $1 }//sort{ $0 > $1 }
 print(sortedNumbers)
 
+print(numbers.sorted())
+print(numbers.sorted(by: {$1 > $0}))
+//numbers.sorted(by: <#T##(Int, Int) -> Bool#>)
 
+//写法二：
+let sortedNumbers2 = numbers.sorted(by: {
+    (num1: Int, num2: Int) -> Bool
+    in
+    let result = num1 > num2
+    return result
+})
+print(sortedNumbers2)
+
+//写法三：
+func descendingOrder(num1: Int, num2:Int) -> Bool {
+    return num1 > num2
+}
+let sortedNumbers3 = numbers.sorted(by: descendingOrder)
+print(sortedNumbers3)
 
 
 
