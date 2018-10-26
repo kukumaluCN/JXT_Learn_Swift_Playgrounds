@@ -3,6 +3,7 @@
 import UIKit
 
 //数组
+
 //数组是最基本的数据结构。在 Swift 中，以前 Objective-C 时代中将 NSMutableArray 和 NSArray 分开的做法，被统一到了唯一的数据结构 —— Array 。虽然看上去就一种数据结构，其实它的实现有三种：
 //ContiguousArray<Element>：效率最高，元素分配在连续的内存上。如果数组是值类型（栈上操作），则 Swift 会自动调用 Array 的这种实现；如果注重效率，推荐声明这种类型，尤其是在大量元素是类时，这样做效果会很好。
 //Array<Element>：会自动桥接到 Objective-C 中的 NSArray 上，如果是值类型，其性能与 ContiguousArray 无差别。
@@ -141,4 +142,119 @@ func twoSum2(nums: [Int], _ target: Int) -> [Int] {
 }
 print(twoSum2(nums: numsArr, target))
 
+
+
+
+
+//字符串
+
+//在 Swift 中，字符串不同于其他语言（包括 Objective-C），它是值类型而非引用类型。首先还是列举一下字符串的通常用法。
+
+//字符串和数字之间的转换
+let str = "3"
+print(str)
+
+let num = Int(str)
+print(num!)
+
+let number = 3
+print(number)
+
+let string = String(number)
+print(string)
+
+
+//字符串长度
+let len = str.count
+print(len)
+
+
+//访问字符串中的单个字符，时间复杂度为O(1)
+let char = str[str.index(str.startIndex, offsetBy: 0)]
+print(char)
+
+
+//修改字符串
+var str2 = "123"
+print(str2)
+
+str2.remove(at: str2.startIndex)
+print(str2)
+
+str2.removeFirst(1)
+print(str2)
+
+str2.append("c")
+print(str2)
+
+str2 += " hello world"
+print(str2)
+
+//检测字符串是否是由数字构成
+func isStrNum(str: String) -> Bool {
+    return Int(str) != nil
+}
+print(Int("123t"))
+print(isStrNum(str: "123t"))
+print(isStrNum(str: "456"))
+
+//将字符串按字母排序（不考虑大小写）
+func sortStr(str: String) -> String {
+    return String(str.sorted())
+}
+print("aecfsoh".sorted())
+print(sortStr(str: "aecfsoh"))
+
+
+
+//给一个字符串，将其按照单词顺序进行反转。比如说 s 是 "the sky is blue",
+//那么反转就是 "blue is sky the"。
+
+//这道题目一看好简单，不就是反转字符串的翻版吗？这种方法有以下两个问题
+//每个单词长度不一样
+//空格需要特殊处理 这样一来代码写起来会很繁琐而且容易出错。不如我们先实现一个字符串翻转的方法。
+
+fileprivate func reverse<T>(_ chars: inout [T], _ start: Int, _ end: Int) {
+    var start = start, end = end
+    
+    while start < end {
+        swap(&chars, start, end)
+        start += 1
+        end -= 1
+    }
+}
+fileprivate func swap<T>(_ chars: inout [T], _ p: Int, _ q: Int) {
+    (chars[p], chars[q]) = (chars[q], chars[p])
+}
+
+var reverseStr = "the sky is blue"
+var ch = Array(reverseStr)
+reverse(&ch, 0, ch.count-1)
+print(reverseStr)
+
+//有了这个方法，我们就可以实行下面两种字符串翻转：
+
+//整个字符串翻转，"the sky is blue" -> "eulb si yks eht"
+//每个单词作为一个字符串单独翻转，"eulb si yks eht" -> "blue is sky the" 整体思路有了，我们就可以解决这道问题了
+
+func reverseWords(s: String?) -> String? {
+    guard let s = s else {
+        return nil
+    }
+    
+    var chars = Array(s), start = 0
+    reverse(&chars, 0, chars.count - 1)
+    print(chars)
+    
+    for i in 0 ..< chars.count {
+        if i == chars.count - 1 || chars[i + 1] == " " {
+            reverse(&chars, start, i)
+            start = i + 2 //跳过空格
+        }
+    }
+    
+    return String(chars)
+}
+
+print(reverseWords(s: "the sky is blue"))
 
